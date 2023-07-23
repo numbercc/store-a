@@ -9,6 +9,7 @@ data class Product(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long=-1,
+    @Column(unique=true)
     val productCode: String,
     var stock: Int = 0,
     var reservedStock: Int = 0,

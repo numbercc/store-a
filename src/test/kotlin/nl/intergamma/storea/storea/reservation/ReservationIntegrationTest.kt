@@ -2,8 +2,8 @@ package nl.intergamma.storea.storea.reservation
 
 import nl.intergamma.storea.storea.product.Product
 import nl.intergamma.storea.storea.product.ProductRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -26,6 +26,12 @@ class ReservationIntegrationTest {
 
   @Autowired
   private lateinit var reservationRepository: ReservationRepository
+
+  @AfterEach
+  fun cleanup(){
+    reservationRepository.deleteAll()
+    productRepository.deleteAll()
+  }
 
   @Test
   fun `test reserveStock endpoint`() {

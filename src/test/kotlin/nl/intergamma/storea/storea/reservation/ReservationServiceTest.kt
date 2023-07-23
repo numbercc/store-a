@@ -1,9 +1,7 @@
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.slot
-import io.mockk.verify
 import nl.intergamma.storea.storea.product.Product
 import nl.intergamma.storea.storea.product.ProductService
 import nl.intergamma.storea.storea.reservation.ProductReservation
@@ -39,7 +37,7 @@ class ReservationServiceTest {
     every { productService.updateArticle(capture(productCapturingSlot)) } answers  {productCapturingSlot.captured}
 
     // Act
-    val reservedArticle = reservationService.reserveStock(productCode, quantity)
+    reservationService.reserveStock(productCode, quantity)
 
     // Assert
     assertEquals(productCapturingSlot.captured.stock, 10) // Stock reduced by reserved quantity
@@ -73,6 +71,7 @@ class ReservationServiceTest {
     val productCapturingSlot = slot<Product>()
     every { productService.updateArticle(capture( productCapturingSlot)) } answers {productCapturingSlot.captured}
     every { reservationRepository.findByIdOrNull(articleReservationId) } returns(reservation)
+    every { reservationRepository.delete(any()) } just runs
     every { productService.findByProductCode(productCode) } returns(product)
 
 
